@@ -3,7 +3,8 @@
 
 platforms/
 plugins/
-
+*.swp
+.io-config.json
 # Logs
 logs
 *.log
