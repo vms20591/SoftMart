@@ -1,0 +1,83 @@
+<ion-view>
+  <ion-nav-title>
+    <i class='ion-search'></i> <span style='font-weight:bold;'>Search Home</span>
+  </ion-nav-title>
+  <ion-content class="padding">
+    <div class="row responsive-sm" style="text-align:center">
+      <h2>Products</h2>
+    </div>
+    <div class="row responsive-sm product-gallery">
+      <div class="col">
+        <div class="list">
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" placeholder="Search">
+            </label>
+            <button class="button button-small button-balanced">
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row responsive-sm product-gallery">
+      <p>
+      <strong>Found {{products.length}} products in: </strong>
+        <a ng-repeat="filter in ['Rs.1000-2000','Levis']" class="cross">{{filter}} X&nbsp;</a>
+      </p>
+    </div>
+    <hr/>
+    <div class="row responsive-sm product-gallery">
+      <div class="list">
+        <label class="item item-input item-select">
+          <div class="input-label">
+           Show By
+          </div>
+          <select ng-model="showProductsBy" ng-change="showProductsByUpdate();" ng-options="option.name for option in showProductsByOptions track by option.id">
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="row responsive-sm product-gallery">
+      <div class="col col-20" ng-repeat="item in products">
+        <div class="list card">
+          <div class="item item-body">
+            <div class="item-image">
+              <img src="img/noicon.png">
+            </div>
+            <p align="center" class="product-title">
+              <b>Default Product</b>
+            </p>
+            <p class="rating-group">
+              <i class="icon ion-ios-star"></i>
+              <i class="icon ion-ios-star"></i>
+              <i class="icon ion-ios-star"></i>
+              <i class="icon ion-ios-star-half"></i>
+              <i class="icon ion-ios-star-outline"></i>
+              <span class="rating">&nbsp;(500 ratings)</span>
+            </p>
+            <hr/>
+            <p class="product-title">
+              Price: Rs.1500/-
+            </p>
+            <hr/>
+          </div>
+          <button class="item item-icon-left balanced" ng-click="addToCart(item);">
+            <i class="icon ion-ios-cart-outline"></i>
+            Add to Cart
+          </button>
+          <a class="item item-icon-left balanced" href="#/tabs/search/home">
+            <i class="icon ion-forward"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;" class="row responsive-sm">
+      <div class="col col-50 col-offset-25">
+        <button class="button button-balanced" ng-click="loadMore()">More...</button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

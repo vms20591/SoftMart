@@ -5,6 +5,7 @@ platforms/
 plugins/
 *.swp
 .io-config.json
+*.zip
 # Logs
 logs
 *.log

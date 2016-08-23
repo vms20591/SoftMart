@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app=angular.module('softMart', ['ionic','softMart.controllers'])
+var app=angular.module('softMart', ['ionic','softMart.controllers','softMart.services'])
 
 app.config(function($stateProvider,$urlRouterProvider){
   $urlRouterProvider.otherwise('/tabs/home');
@@ -11,7 +11,8 @@ app.config(function($stateProvider,$urlRouterProvider){
   $stateProvider.state('tabs',{
     url:'/tabs',
     abstract:true,
-    templateUrl:'templates/tabs.html'
+    templateUrl:'templates/tabs.html',
+    controller:'TabsController'
   }).state('tabs.home',{
     url:'/home',
     cache:false,
@@ -23,10 +24,26 @@ app.config(function($stateProvider,$urlRouterProvider){
     }
   }).state('tabs.search',{
     url:'/search',
+    abstract:true,
     views:{
       'search-tab':{
+        templateUrl:'templates/search-tab-base.html',
+      }
+    },
+  }).state('tabs.search.category',{
+    url:'/category',
+    views:{
+      'search-tab-home':{
         templateUrl:'templates/search-tab.html',
-        controller:'SearchTabController'
+        controller:'SearchCategoryTabController'
+      }
+    }
+  }).state('tabs.search.home',{
+    url:'/home',
+    views:{
+      'search-tab-home':{
+        templateUrl:'templates/search-tab-home.html',
+        controller:'SearchHomeTabController'
       }
     }
   }).state('tabs.post-ad',{

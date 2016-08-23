@@ -1,1 +1,63 @@
 /* Empty. Add your own CSS if you like */
+
+/*
+ * http://docs.angularjs.org/api/ng/directive/ngShow#usage_animations
+*/
+.list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+}
+
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
+}
+
+.spinner svg {
+  width: 40px;
+  height: 40px;
+  stroke: #33CD5F;
+  fill: #33CD5F;
+}
+
+.product-gallery{
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+a.cross{
+  color:#99999D;
+  margin-right:10px;
+}
+
+a.cross:hover{
+  text-decoration:line-through;
+  cursor:pointer;
+}
+
+span.rating{
+  color:#99999D;
+}
+
+.ion-ios-star,.ion-ios-star-half{
+  color:#FFE11B;
+}
+
+p.product-title{
+  font-weight:bold;
+  color:black;
+}
+
+p.rating-group{
+  font-size:20px;
+}
+
+.card:hover{
+  box-shadow:0px 0px 7px #33CD5F;
+}

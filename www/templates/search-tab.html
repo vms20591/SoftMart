@@ -1,5 +1,21 @@
-<ion-view view-title="<i class='ion-search'></i> <span style='font-weight:bold;'>Search</span>">
+<ion-view>
+  <ion-nav-title>
+    <i class='ion-search'></i> <span style='font-weight:bold;'>Search Category</span>
+  </ion-nav-title>
   <ion-content class="padding">
-    <p>This is Search</p>
+    <ion-list>
+      <div ng-repeat="group in groups">
+        <ion-item class="item-stable" ng-click="toggleGroup(group)" ng-class="{active: isGroupShown(group)}">
+          <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+            &nbsp;
+          <span ng-bind="group.name"></span>
+        </ion-item>
+        <ion-item class="item-accordion" ng-repeat="item in group.items" href="#/tabs/search/home?category={{group.name}}&item={{item}}" ng-show="isGroupShown(group)">
+            <span>{{item}}</span>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+        </ion-item>
+      </div>
+    </ion-list>
   </ion-content>
 </ion-view>
+

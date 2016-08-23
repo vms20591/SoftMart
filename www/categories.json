@@ -1,0 +1,24 @@
+{
+    "categories":[
+        {
+            "name":"Electronics",
+            "items":["Computers","Laptops","Accessories","Games","Consoles"]
+        },
+        {
+            "name":"Vehicles",
+            "items":["Cars","Bikes"]
+        },
+        {
+            "name":"Household Articles",
+            "items":["Iron Box","Bottles"]
+        },
+        {
+            "name":"Home",
+            "items":["Paying Guest","Hostel","Apartments"]
+        },
+        {
+            "name":"Miscellaneous",
+            "items":["Shirts","T-Shits"]
+        }
+    ]
+}
