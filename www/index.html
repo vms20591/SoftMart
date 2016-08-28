@@ -5,25 +5,34 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="assets/lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
     <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="assets/lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
-    <script src="js/app.js"></script>
-    <script src="js/controller.js"></script>
-    <script src="js/services.js"></script>
+    <script src="app.js"></script>
+    <script src="tabs/TabsController.js"></script>
+    <script src="tabs/TabsService.js"></script>
+    <script src="tabs/home/HomeController.js"></script>
+    <script src="tabs/post-ad/PostAdController.js"></script>
+    <script src="tabs/search/SearchController.js"></script>
+    <script src="tabs/search/SearchService.js"></script>
+    <script src="tabs/search/categories/SearchCategoryController.js"></script>
+    <script src="tabs/search/categories/SearchCategoryService.js"></script>
+    <script src="tabs/search/results/SearchResultController.js"></script>
+    <script src="tabs/search/results/SearchResultService.js"></script>
+    <script src="tabs/user/UserAccountController.js"></script>
   </head>
-  <body ng-controller="AppController" ng-init="init()">
+  <body>
     <ion-nav-bar class="bar-balanced">  
       <ion-nav-back-button></ion-nav-back-button>
     </ion-nav-bar>

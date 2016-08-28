@@ -3,23 +3,23 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app=angular.module('softMart', ['ionic','softMart.controllers','softMart.services'])
+var app=angular.module('softMart', ['ionic','softMart.tabsControllers','softMart.tabsServices']);
 
-app.config(function($stateProvider,$urlRouterProvider){
+app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
   $urlRouterProvider.otherwise('/tabs/home');
 
   $stateProvider.state('tabs',{
     url:'/tabs',
     abstract:true,
-    templateUrl:'templates/tabs.html',
+    templateUrl:'tabs/tabs.html',
     controller:'TabsController'
   }).state('tabs.home',{
     url:'/home',
     cache:false,
     views:{
       'home-tab':{
-        templateUrl:'templates/home-tab.html',
-        controller:'HomeTabController'
+        templateUrl:'tabs/home/home-tab.html',
+        controller:'HomeController'
       }
     }
   }).state('tabs.search',{
@@ -27,43 +27,43 @@ app.config(function($stateProvider,$urlRouterProvider){
     abstract:true,
     views:{
       'search-tab':{
-        templateUrl:'templates/search-tab-base.html',
+        templateUrl:'tabs/search/search-tab-base.html',
       }
     },
   }).state('tabs.search.category',{
     url:'/category',
     views:{
       'search-tab-home':{
-        templateUrl:'templates/search-tab.html',
-        controller:'SearchCategoryTabController'
+        templateUrl:'tabs/search/categories/search-tab.html',
+        controller:'SearchCategoryController'
       }
     }
   }).state('tabs.search.home',{
     url:'/home',
     views:{
       'search-tab-home':{
-        templateUrl:'templates/search-tab-home.html',
-        controller:'SearchHomeTabController'
+        templateUrl:'tabs/search/results//search-tab-home.html',
+        controller:'SearchResultController'
       }
     }
   }).state('tabs.post-ad',{
     url:'/post-ad',
     views:{
       'post-ad-tab':{
-        templateUrl:'templates/post-ad-tab.html',
-        controller:'PostAdTabController'
+        templateUrl:'tabs/post-ad/post-ad-tab.html',
+        controller:'PostAdController'
       }
     }
   }).state('tabs.my-account',{
     url:'/my-account',
     views:{
       'my-account-tab':{
-        templateUrl:'templates/my-account-tab.html',
-        controller:'MyAccountTabController'
+        templateUrl:'tabs/user/my-account-tab.html',
+        controller:'UserAccountController'
       }
     }
   });
-});
+}]);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

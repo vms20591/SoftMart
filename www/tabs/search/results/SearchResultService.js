@@ -1,39 +1,7 @@
 (function(){
-  var app=angular.module('softMart.services',[]);
+  var app=angular.module('softMart.searchResultServices',[]);
 
-  app.factory('SearchCategoryService',function($http,$q){
-  
-    var categories=null;
-
-    var setCategories=function(){
-      var defer=$q.defer();
-
-      if(categories===null){
-        $http.get('categories.json').then(function(data){
-          categories=data.data.categories;
-          defer.resolve(categories);
-        },function(error){
-          defer.reject(error);  
-        });
-      }
-      else{
-        defer.resolve(categories);
-      }
-
-      return defer.promise;
-    };
-
-    var getCategories=function(){
-      return categories;
-    };
-
-    return {
-      setCategories:setCategories,
-      getCategories:getCategories
-    };
-  });
-
-  app.factory('SearchHomService',function($http,$q){
+  app.factory('SearchHomService',['$http','$q',function($http,$q){
     var products=null;
 
     var filter_products=function(category_name,item){
@@ -46,7 +14,7 @@
       var defer=$q.defer();
 
       if(products===null){
-        $http.get('products.json').then(function(data){
+        $http.get('tabs/search/results/products.json').then(function(data){
           products=data.data.categories;
           defer.resolve(categories);
         },function(error){
@@ -84,6 +52,6 @@
       fetch_products:fetch_products,
       getResults:getResults
     };
-  });
+  }]);
 
 })();
