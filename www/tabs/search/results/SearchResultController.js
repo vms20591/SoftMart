@@ -36,6 +36,16 @@
       console.log('Added to cart');
     };
 
+    $scope.search=function(){
+      $scope.show();
+
+      $timeout(function(){
+        $scope.hide();
+      },2000);
+
+      console.log("search clicked");   
+    };
+
     $scope.loadMore=function(){
       $scope.show();
       for(var i=0;i<5;i++){
