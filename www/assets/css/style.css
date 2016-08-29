@@ -66,11 +66,18 @@ p.rating-group{
   border-radius:0px !important;
 }
 
+.list-input-special{
+  width:90%;
+  position:relative;
+  margin:0px auto;
+}
+
 input[type="text"].input-special{
   display:inline-block;
+  background:#F7F7F7;
   border-radius:0px;
   border-bottom:1px solid #387EF5;
-  width:90%;
+  width:85%;
   height:35px;
   padding:5px;
   float:left;
@@ -81,7 +88,7 @@ input[type="text"].input-special{
   display:inline-block;  
   background:#F7F7F7;
   width:35px;
-  line-height:33px;
+  line-height:34px;
   font-weight:bold;
   border-bottom:1px solid #387EF5;
   border-left:0px;

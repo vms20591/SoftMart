@@ -8,7 +8,7 @@
     </div>
     <div class="row responsive-sm product-gallery">
       <div class="col">
-        <div class="list">
+        <div class="list list-input-special">
           <input type="text" class="input-special" placeholder="Search">
           <span class="input-search icon ion-ios-search" ng-click="search()"></span>
         </div>
@@ -56,11 +56,11 @@
             </p>
             <hr/>
           </div>
-          <button class="item item-icon-left balanced" ng-click="addToCart(item);">
+          <button class="item item-icon-left positive" ng-click="addToCart(item);">
             <i class="icon ion-ios-cart-outline"></i>
             Add to Cart
           </button>
-          <a class="item item-icon-left balanced" href="#/tabs/search/home">
+          <a class="item item-icon-left positive" href="#/tabs/search/home">
             <i class="icon ion-forward"></i>
             View Details
           </a>
@@ -69,7 +69,7 @@
     </div>
     <div style="text-align:center;" class="row responsive-sm">
       <div class="col col-50 col-offset-25">
-        <button class="button button-balanced" ng-click="loadMore()">More...</button>
+        <button class="button button-positive" ng-click="loadMore()">More...</button>
       </div>
     </div>
   </ion-content>
