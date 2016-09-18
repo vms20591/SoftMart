@@ -10,7 +10,7 @@
             &nbsp;
           <span ng-bind="group.name"></span>
         </ion-item>
-        <ion-item class="item-accordion" ng-repeat="item in group.items" href="#/tabs/search/home?category={{group.name}}&item={{item}}" ng-show="isGroupShown(group)">
+        <ion-item class="item-accordion" ng-repeat="item in group.items" ui-sref="tabs.search.home({category:group.name,subCategory:item})" ng-show="isGroupShown(group)">
             <span>{{item}}</span>
             <i class="icon ion-chevron-right icon-accessory"></i>
         </ion-item>

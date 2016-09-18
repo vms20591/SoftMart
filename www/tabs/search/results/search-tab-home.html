@@ -9,67 +9,63 @@
     <div class="row responsive-sm product-gallery">
       <div class="col">
         <div class="list list-input-special">
-          <input type="text" class="input-special" placeholder="Search">
+          <input type="text" class="input-special" ng-model="searchText" placeholder="Search">
           <span class="input-search icon ion-ios-search" ng-click="search()"></span>
         </div>
       </div>
     </div>
     <div class="row responsive-sm product-gallery">
       <p>
-      <strong>Found {{products.length}} products in: </strong>
-        <a ng-repeat="filter in ['Rs.1000-2000','Levis']" class="cross">{{filter}} X&nbsp;</a>
+        <strong>Found {{products.length}} products in: </strong>{{currentCategory.category}} -> {{currentCategory.subCategory}}
       </p>
     </div>
     <hr/>
-    <div class="row responsive-sm product-gallery">
+    <div ng-if="products.length>0" class="row responsive-sm product-gallery">
       <div class="list">
         <label class="item item-input item-select">
           <div class="input-label">
            Show By
           </div>
-          <select ng-model="showProductsBy" ng-change="showProductsByUpdate();" ng-options="option.name for option in showProductsByOptions track by option.id">
+          <select ng-model="showProductsBy" ng-change="showProductsByUpdate(showProductsBy)" ng-options="option.name for option in showProductsByOptions track by option.id">
           </select>
         </label>
       </div>
     </div>
     <div class="row responsive-sm product-gallery">
-      <div class="col col-20" ng-repeat="item in products">
+        <div class="col col-20" ng-repeat="item in products | orderBy:propertyName:reverse | limitTo:5 | filter:searchText">
         <div class="list card">
           <div class="item item-body">
             <div class="item-image">
-              <img src="assets/img/noicon.png">
+              <img src="assets/img/noicon.svg">
             </div>
             <p align="center" class="product-title">
-              <b>Default Product</b>
-            </p>
-            <p class="rating-group">
-              <i class="icon ion-ios-star"></i>
-              <i class="icon ion-ios-star"></i>
-              <i class="icon ion-ios-star"></i>
-              <i class="icon ion-ios-star-half"></i>
-              <i class="icon ion-ios-star-outline"></i>
-              <span class="rating">&nbsp;(500 ratings)</span>
+              <b ng-bind="item.name"></b>
             </p>
             <hr/>
             <p class="product-title">
-              Price: Rs.1500/-
+            Price: {{item.price | currency:"£":2}}
             </p>
             <hr/>
           </div>
           <button class="item item-icon-left positive" ng-click="addToCart(item);">
             <i class="icon ion-ios-cart-outline"></i>
-            Add to Cart
+            Shortlist
           </button>
-          <a class="item item-icon-left positive" href="#/tabs/search/home">
+          <a class="item item-icon-left positive" ng-click="showProductDetails(item)">
             <i class="icon ion-forward"></i>
             View Details
           </a>
         </div>
       </div>
     </div>
-    <div style="text-align:center;" class="row responsive-sm">
+    <div ng-if="products.length>5" style="text-align:center;" class="row responsive-sm">
       <div class="col col-50 col-offset-25">
         <button class="button button-positive" ng-click="loadMore()">More...</button>
+      </div>
+    </div>
+    <div ng-if="products.length===0" style="text-align:center;" class="row responsive-sm">
+      <div class="col col-50 col-offset-25">
+        <h3>No results found...</h3>
       </div>
     </div>
   </ion-content>

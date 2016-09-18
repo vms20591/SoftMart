@@ -1,14 +1,18 @@
-// Ionic Starter App
+// Ionic Soft Mart App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'softMart' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app=angular.module('softMart', ['ionic','softMart.tabsControllers','softMart.tabsServices']);
+var app=angular.module('softMart', ['ionic','softMart.initController','softMart.tabsControllers','softMart.tabsServices','softMart.softMartFilters']);
 
 app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
-  $urlRouterProvider.otherwise('/tabs/home');
+  $urlRouterProvider.otherwise('/');
 
-  $stateProvider.state('tabs',{
+  $stateProvider.state('init',{
+    url:'/',
+    templateUrl:'common/init.html',
+    controller:'InitController'
+  }).state('tabs',{
     url:'/tabs',
     abstract:true,
     templateUrl:'tabs/tabs.html',
@@ -39,11 +43,19 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
       }
     }
   }).state('tabs.search.home',{
-    url:'/home',
+      url:'/home/:category/:subCategory',
     views:{
       'search-tab-home':{
-        templateUrl:'tabs/search/results//search-tab-home.html',
+        templateUrl:'tabs/search/results/search-tab-home.html',
         controller:'SearchResultController'
+      }
+    }
+  }).state('tabs.search.detail',{
+    url:'/detail/:productId',
+    views:{
+      'search-tab-home':{
+        templateUrl:'tabs/search/results/product-details.html',
+        controller:'ProductDetailsController'
       }
     }
   }).state('tabs.post-ad',{
@@ -62,6 +74,22 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
         controller:'UserAccountController'
       }
     }
+  }).state('tabs.my-cart',{
+    url:'/cart',
+    views:{
+      'my-account-tab':{
+        templateUrl:'tabs/user/show-cart.html',
+        controller:'AdsCartController'
+      }
+    }
+  }).state('tabs.product-detail',{
+      url:'/:productId',
+      views:{
+        'my-account-tab':{
+          templateUrl:'tabs/search/results/product-details.html',
+          controller:'ProductDetailsController'
+        }
+      }
   });
 }]);
 

@@ -5,7 +5,8 @@
     $scope.options={
       loop:true,
       autoplay:1500,
-      pager:true
+      pager:true,
+      autoplayDisableOnInteraction:false,
     }; 
   }]);
 })();

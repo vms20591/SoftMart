@@ -1,5 +1,42 @@
-<ion-view view-title="<i class='ion-person-stalker'></i> <span style='font-weight:bold;'>My Account</span>">
+<ion-view>
+  <ion-nav-title>
+      <i class='ion-person-stalker'></i> <span style='font-weight:bold;'>My Account</span>
+  </ion-nav-title>
   <ion-content class="padding">
-    <p>This is My Account</p>
+    <ion-refresher
+      pulling-text="Pull to update"
+      on-refresh="doRefresh()">
+    </ion-refresher>
+    <div class="list">
+      <a class="item item-divider">
+        Advertisements
+      </a>
+      <a class="item item-icon-left">
+        <i class="icon ion-forward"></i>
+        Ads Posted
+        <span class="badge badge-positive">0</span>
+      </a>
+      <a class="item item-icon-left">
+        <i class="icon ion-reply"></i>
+        Ads Responded
+        <span class="badge badge-positive">0</span>
+      </a>
+      <a ui-sref="tabs.my-cart" class="item item-icon-left">
+        <i class="icon ion-star"></i>
+        Ads Shortlisted
+        <span class="badge badge-positive">{{itemsInCart}}</span>
+      </a>
+      <a class="item item-divider">
+        General
+      </a>
+      <a class="item item-icon-left">
+        <i class="icon ion-person-stalker"></i>
+        Profile
+      </a>
+      <a class="item item-icon-left">
+        <i class="icon ion-clipboard"></i>
+        Terms &amp; Conditions
+      </a>
+    </div>
   </ion-content>
 </ion-view>

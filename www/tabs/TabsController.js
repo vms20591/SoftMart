@@ -6,25 +6,15 @@
     $scope.show = function() {
       $ionicLoading.show({
         template: '<ion-spinner icon="ripple"></ion-spinner><br/><span class="title">Loading...</span>'
-        }).then(function(){
-        console.log("The loading indicator is now displayed");
       });
     };
         
     $scope.hide = function(){
-      $ionicLoading.hide().then(function(){
-        console.log("The loading indicator is now hidden");
-      });
+      $ionicLoading.hide();
     };
 
     $scope.init=function(){
-      $scope.show();
-        
-      SearchCategoryService.setCategories().then(function(){
-        $timeout(function(){
-          $scope.hide();  
-        },2000); 
-      });
+      SearchCategoryService.setCategories();
     };
     
     $scope.init();
@@ -38,10 +28,6 @@
       }
       
       var alertPopup = $ionicPopup.alert(opts);
-
-      alertPopup.then(function(res) {
-        console.log('Default alert popup logging');
-      });
     };
 
   }]);

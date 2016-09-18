@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.searchCategoryControllers',[]);
     
-  app.controller('SearchCategoryController',['$scope','SearchCategoryService',function($scope,SearchCategoryService){
+  app.controller('SearchCategoryController',['$scope','SearchCategoryService','$state',function($scope,SearchCategoryService,$state){
 
     $scope.groups = SearchCategoryService.getCategories();
 
@@ -20,5 +20,6 @@
     $scope.isGroupShown = function(group) {
       return $scope.shownGroup === group;
     };
+
   }]);
 })();
