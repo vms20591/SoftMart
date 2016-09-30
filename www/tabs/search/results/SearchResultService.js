@@ -1,22 +1,39 @@
 (function(){
   var app=angular.module('softMart.searchResultServices',[]);
 
-  app.factory('SearchHomeService',['$http','$q',function($http,$q){
+  app.factory('SearchHomeService',['$http','$q','PouchDbService',function($http,$q,PouchDbService){
     var products=null;
     var productsInCart=[];
+    var db=PouchDbService.getDb();
 
     var filter_products=function(currentCategory){
       return products.filter(function(product){
-	return product.category===currentCategory.category && 
-	  product.sub_category===currentCategory.subCategory;
+	return product.selectedCategory===currentCategory.category && 
+	  product.selectedSubCategory===currentCategory.subCategory;
       });      
     };
 
-    var format_products=function(products){
-      return products.map(function(product){
-        product.posted_date=new Date(product.posted_date); 
+    var format_attachments=function(attachments){
+      angular.forEach(attachments,function(value,key,obj){
+        obj[key]['src']=URL.createObjectURL(value.data);
+      });
+    };
 
-        return product;
+    var format_products=function(resp){
+      return resp.rows.map(function(row){
+        return row.doc;
+      }).filter(function(row){
+        if(row.type==='ads'){
+          row.postedOn=new Date(row.postedOn);
+          
+          if(row._attachments){
+            format_attachments(row._attachments);
+          };
+
+          return true;
+        }
+
+        return false;
       });
     };
 
@@ -49,21 +66,65 @@
     };
 
     var fetchProducts=function(){
-      var defer=$q.defer();
-
       if(products===null){
-        $http.get('tabs/search/results/products.json').then(function(resp){
-          products=format_products(resp.data.products);
-          defer.resolve(products);
-        },function(error){
-          defer.reject(error);  
+        return $q.when(db.allDocs({include_docs:true,attachments:true,binary:true})).then(function(resp){
+          products=format_products(resp);
+
+          db.changes({live:true,since:'now',include_docs:true}).on('change',reactToChange);
+
+          return products;
+        }).catch(function(err){
+          console.log(err);
         });
       }
       else{
-        defer.resolve(products);
+        return $q.when(products);
+      }
+    };
+
+    var reactToChange=function(change){
+      console.log("Change: ",change);
+        
+      if(change.deleted){
+        reactToDelete(change.id);
+      }
+      else{
+        reactToInsertOrUpdate(change);
+      }
+    }
+
+    var binarySearch=function(arr, docId) {
+      var low = 0, high = arr.length, mid;
+     
+      while (low < high) {
+        mid = (low + high) >>> 1; // faster version of Math.floor((low + high) / 2)
+        arr[mid]._id < docId ? low = mid + 1 : high = mid
       }
 
-      return defer.promise;
+      return low;
+    };
+
+    var reactToDelete=function(id){
+      var index=binarySearch(products,id);
+
+      var product=products[index];
+
+      if(product && product._id===id){
+        products.splice(index,1)
+      }
+    };
+
+    var reactToInsertOrUpdate=function(newProduct){
+      var index=binarySearch(products,newProduct.id);
+
+      var product=products[index];
+
+      if(product && product._id===newProduct.id){
+        products[index]=newProduct.doc;
+      }
+      else{
+        products.splice(index,0,newProduct.doc);
+      }
     };
 
     var getResults=function(currentCategory){

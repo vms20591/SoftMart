@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.searchResultControllers',[]);
 
-  app.controller('SearchResultController',['$scope','$timeout','$state','$stateParams','SearchHomeService','ProductDetailService',function($scope,$timeout,$state,$stateParams,SearchHomeService,ProductDetailService){
+  app.controller('SearchResultController',['$scope','$timeout','$state','$stateParams','$ionicPlatform','SearchHomeService','ProductDetailService',function($scope,$timeout,$state,$stateParams,$ionicPlatform,SearchHomeService,ProductDetailService){
 
     $scope.products=[];
     $scope.currentCategory=null;
@@ -18,11 +18,11 @@
 	
 	return SearchHomeService.getResults($scope.currentCategory);
       }).then(function(products){
-	$scope.products=products
+	$scope.products=products;
       });
     };
 
-    $scope.init();
+    $scope.init();  
 
     $scope.showProductsByOptions=[
       {
@@ -80,8 +80,6 @@
       $timeout(function(){
         $scope.hide();
       },2000);
-
-      console.log("search clicked");   
     };
 
     $scope.loadMore=function(){
@@ -96,10 +94,47 @@
 
       $state.go('tabs.search.detail',{productId:item.id});
     };
+
+    $scope.getDefaultImage=function(product){
+      var returnValue='assets/img/noicon.svg';
+      angular.forEach(product._attachments,function(value,key){
+        if(key===product.defaultImg){
+          returnValue=value.src;
+        }
+      });
+
+      return returnValue;
+    };
   }]);
 
-  app.controller('ProductDetailsController',['$scope','$stateParams','ProductDetailService',function($scope,$stateParams,ProductDetailService){
-    $scope.product=ProductDetailService.getCurrentProduct(); 
-    $scope.interestedToPay=false;
+  app.controller('ProductDetailsController',['$scope','$stateParams','$ionicPlatform','ProductDetailService',function($scope,$stateParams,$ionicPlatform,ProductDetailService){
+    //This "vm" represents list of images
+    $scope.imgSrcs=[];
+
+    //This "vm" represents the currently selected img
+    $scope.selectedImg='assets/img/noicon.svg';
+
+    $ionicPlatform.ready(function(){
+      $scope.product=ProductDetailService.getCurrentProduct(); 
+
+      angular.forEach($scope.product._attachments,function(value,key){
+        if(key===$scope.product.defaultImg){
+          $scope.selectedImg=value.src;
+        }
+
+        $scope.imgSrcs.push(value.src);
+      });
+    });
+
+    $scope.updateSelectedImg=function(index){
+      $scope.selectedImg=$scope.imgSrcs[index];
+    };
+
+    $scope.notifySeller=function(){
+      $scope.showAlert({
+        title: 'Success',
+        template: 'Notify Seller Successful'
+      });
+    };
   }]);
 })();

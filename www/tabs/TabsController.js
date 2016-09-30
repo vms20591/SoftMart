@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.tabsControllers',['softMart.homeControllers','softMart.postAdControllers','softMart.userControllers','softMart.searchControllers']);
 
-  app.controller('TabsController',['$scope','$timeout','$ionicLoading','$ionicPopup','SearchCategoryService',function($scope,$timeout,$ionicLoading,$ionicPopup,SearchCategoryService){
+  app.controller('TabsController',['$scope','$timeout','$ionicLoading','$ionicPopup','SearchCategoryService','PouchDbService',function($scope,$timeout,$ionicLoading,$ionicPopup,SearchCategoryService,PouchDbService){
 
     $scope.show = function() {
       $ionicLoading.show({
@@ -15,6 +15,7 @@
 
     $scope.init=function(){
       SearchCategoryService.setCategories();
+      PouchDbService.initDb();
     };
     
     $scope.init();

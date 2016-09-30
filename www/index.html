@@ -15,33 +15,52 @@
 
     <!-- ionic/angularjs js -->
     <script src="assets/lib/ionic/js/ionic.bundle.js"></script>
+    
+    <!-- moment js -->
     <script src="lib/moment/min/moment.min.js"></script>
+    
+    <!-- pouchdb js -->
+    <script src="lib/pouchdb/dist/pouchdb.min.js"></script>  
+
+    <!-- ng-cordova plugin -->
+    <script src="lib/ng-cordova.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <!-- your app's js -->
+    <!-- App initialization imports -->
     <script src="app.js"></script>
     <script src="common/init.js"></script>
+    
+    <!-- Filter import -->
     <script src="common/filters/filters.js"></script>
-    <script src="tabs/TabsController.js"></script>
+    
+    <!-- Service imports -->
+    <script src="common/pouchdb-services.js"></script>
     <script src="tabs/TabsService.js"></script>
+    <script src="tabs/post-ad/PostAdService.js"></script>
+    <script src="tabs/search/SearchService.js"></script>
+    <script src="tabs/search/categories/SearchCategoryService.js"></script>
+    <script src="tabs/search/results/SearchResultService.js"></script>
+    <script src="tabs/user/UserAccountService.js"></script>
+                    
+    <!-- Controller imports -->
+    <script src="tabs/TabsController.js"></script>
     <script src="tabs/home/HomeController.js"></script>
     <script src="tabs/post-ad/PostAdController.js"></script>
     <script src="tabs/search/SearchController.js"></script>
-    <script src="tabs/search/SearchService.js"></script>
     <script src="tabs/search/categories/SearchCategoryController.js"></script>
-    <script src="tabs/search/categories/SearchCategoryService.js"></script>
     <script src="tabs/search/results/SearchResultController.js"></script>
-    <script src="tabs/search/results/SearchResultService.js"></script>
     <script src="tabs/user/UserAccountController.js"></script>
   </head>
   <body>
+    <!-- Navigation bar -->
     <ion-nav-bar class="bar-positive">  
       <ion-nav-back-button>
       </ion-nav-back-button>
     </ion-nav-bar>
 
+    <!-- Nav view where default state gets rendered -->
     <ion-nav-view></ion-nav-view>
   </body>
 </html>

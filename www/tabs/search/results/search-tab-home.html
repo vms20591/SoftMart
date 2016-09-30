@@ -2,21 +2,27 @@
   <ion-nav-title>
     <i class='ion-search'></i> <span style='font-weight:bold;'>Search Home</span>
   </ion-nav-title>
-  <ion-content class="padding">
+  <ion-content class="padding" scroll="true">
     <div class="row responsive-sm" style="text-align:center">
       <h2>Products</h2>
     </div>
     <div class="row responsive-sm product-gallery">
       <div class="col">
-        <div class="list list-input-special">
-          <input type="text" class="input-special" ng-model="searchText" placeholder="Search">
+       <!-- <div class="list list-input-special">
+          <input type="search" class="input-special" ng-model="searchText" placeholder="Search">
           <span class="input-search icon ion-ios-search" ng-click="search()"></span>
+       </div>-->
+        <div class="list">
+          <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>  
+            <input type="search" ng-model="searchText" placeholder="Search">
+          </label>
         </div>
       </div>
     </div>
     <div class="row responsive-sm product-gallery">
       <p>
-        <strong>Found {{products.length}} products in: </strong>{{currentCategory.category}} -> {{currentCategory.subCategory}}
+        <center><strong>Found {{products.length}} products</strong></center>
       </p>
     </div>
     <hr/>
@@ -36,7 +42,7 @@
         <div class="list card">
           <div class="item item-body">
             <div class="item-image">
-              <img src="assets/img/noicon.svg">
+                <img ng-src="{{getDefaultImage(item)}}">
             </div>
             <p align="center" class="product-title">
               <b ng-bind="item.name"></b>

@@ -1,9 +1,101 @@
 <ion-view view-title="<i class='ion-ios-paperplane'></i> <span style='font-weight:bold;'>Post an Ad</span>">
-  <div class="container-under-construction">
-    <div class="top-left-center">
-      <h2>This page is</h2>
-      <img src="assets/img/under_construction_sign.svg">
-      <h5>Sorry for that!</h5>
+  <ion-content class="padding" scroll="true">
+  <div class="list">
+    <div class="item item-divider">
+      <h2>Ad Information</h2>
     </div>
+
+    <label class="item item-input">
+      <span class="input-label">Title</span>
+      <input ng-model="product.name" type="text" placeholder="">
+    </label>
+
+    <label class="item item-input">
+      <span class="input-label">Description</span>
+      <textarea ng-model="product.description" rows="5" placeholder=""></textarea>
+    </label>
+
+    <label class="item item-input">
+      <span class="input-label">Price</span>
+      <input ng-model="product.price" type="number" placeholder="">
+    </label>
+
+    <label class="item item-input item-select">
+      <!--<div class="input-label">
+        Manufactured Year
+      </div>
+      <select ng-model="product.manufacturedYear" ng-options="option as option for option in manufacturedYearOptions"></select>-->
+      <span class="input-label">Manufactured Year</span>
+      <input type="month" ng-model="product.manufacturedYear">
+    </label>
+
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Category
+      </div>
+      <select ng-model="product.selectedCategory" ng-change="updateCategoryOptions(product.selectedCategory)" ng-options="option.name for option in categorySelectOptions track by option.name"></select>
+    </label>
+
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Sub-Category
+      </div>
+      <select ng-model="product.selectedSubCategory" ng-options="option as option for option in subCategorySelectOptions"></select>
+    </label>
+    
+    <div class="item item-divider">
+      <h2>Contact Information</h2>
+    </div>
+
+    <label class="item item-input">
+      <span class="input-label">Mobile</span>
+      <input ng-model="product.contact.phone" type="tel" placeholder="">
+    </label>
+
+    <label class="item item-input">
+      <span class="input-label">Email</span>
+      <input ng-model="product.contact.email" type="email" placeholder="">
+    </label>
+
+    <div class="item item-toggle">
+      Disclose contact details?
+      <label class="toggle toggle-positive">
+        <input ng-model="product.contact.disclose" type="checkbox">
+        <div class="track">
+          <div class="handle"></div>
+        </div>
+      </label>
+    </div>
+
+    <div class="item item-divider">
+      <h2>Upload Photos</h2>
+    </div>
+
+    <div class="item item-icon-right">
+      From Camera
+      <i ng-click="chooseFromCamera()" class="icon ion-ios-camera"></i>
+    </div>
+
+    <div class="item item-icon-right">
+      From Gallery  
+      <i ng-click="chooseFromGallery()" class="icon ion-images"></i>
+    </div>
+
+    <div class="item item-image">
+      <img ng-src="{{selectedImg}}">    
+    </div>
+    
+    <ul class="img-thumbnail-ul">
+      <li ng-repeat="src in imgSrcs">
+        <div class="img-thumb-div">
+          <img ng-click="updateSelectedImg($index)" ng-src="{{src}}">
+        </div>      
+      </li>
+    </ul> 
+   
+    <button class="button button-block button-positive" ng-click="postAd()">
+      Post Ad
+    </button>
   </div>
+  </ion-content>
 </ion-view>

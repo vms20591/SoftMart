@@ -1,16 +1,36 @@
-// Ionic Soft Mart App
+/*
+  Ionic Soft Mart App
+  --------------------
+  
+  angular.module is a global place for creating, registering and retrieving Angular modules.
+  'softMart' is the name of this angular module and as well as the app example (also set in a <html> attribute in index.html)
+  the 2nd parameter is an array of 'requires'
+  
+*/
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'softMart' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-var app=angular.module('softMart', ['ionic','softMart.initController','softMart.tabsControllers','softMart.tabsServices','softMart.softMartFilters']);
+/*
+  Defining the main app module named "softMart" and mentioning all the modules required in an Array as the 2nd argument
+  This makes sure that all dependencies are already injected and doesn't require checking in other modules and losing track
+*/
+var app=angular.module('softMart', ['ionic','ngCordova','softMart.pouchDbServices','softMart.initController','softMart.tabsControllers','softMart.tabsServices','softMart.softMartFilters']);
 
+/*
+  Defining states and their transitions that form the heart of the application
+*/
 app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
+  //Load the init page by default
   $urlRouterProvider.otherwise('/');
 
   $stateProvider.state('init',{
     url:'/',
     templateUrl:'common/init.html',
+    resolve:{
+      dbInitialized:function(PouchDbService){
+        return PouchDbService.initDb().then(function(resp){
+          return resp;
+        });
+      }
+    },
     controller:'InitController'
   }).state('tabs',{
     url:'/tabs',
@@ -88,6 +108,14 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
         'my-account-tab':{
           templateUrl:'tabs/search/results/product-details.html',
           controller:'ProductDetailsController'
+        }
+      }
+  }).state('tabs.my-posted-ads',{
+      url:'/posted-ads',
+      views:{
+        'my-account-tab':{
+          templateUrl:'tabs/user/my-posted-ads.html',
+          controller:'AdsPostedController'
         }
       }
   });

@@ -9,9 +9,22 @@
       </div>
 
       <div class="item item-body">
-        <img class="full-image" src="assets/img/noicon.svg">
+          <img class="full-image" ng-src="{{selectedImg}}">
 
+        <ul class="img-thumbnail-ul">
+          <li ng-repeat="src in imgSrcs">
+            <div class="img-thumb-div">
+              <img ng-click="updateSelectedImg($index)" ng-src="{{src}}">
+            </div>      
+          </li>
+        </ul> 
+      </div>
+
+      <div class="item item-divider">
         <h2>Product Description</h2>
+      </div>
+
+      <div class="item">
         <p>{{product.description}}</p>
       </div>
       
@@ -28,38 +41,37 @@
       </div>
 
       <div class="item">
-        <p>{{product.manufactured_year | sinceTimePassed:"YYYY"}}</p>
+        <p>{{product.manufacturedYear | sinceTimePassed:"YYYY"}}</p>
       </div>
 
       <div class="item item-divider">
-        <h2>Ad Posted On</h2>
+        <h2>Posted On</h2>
       </div>
 
       <div class="item">
-          <p>{{product.posted_date | date:"MM/dd/yyyy" | sinceTimePassed:"MM/DD/YYYY"}}</p>
+          <p>{{product.postedOn | date:"MM/dd/yyyy" | sinceTimePassed:"MM/DD/YYYY"}}</p>
       </div>
 
       <div class="item item-divider">
-        <h2>Ad Category & Sub-Category</h2>
+        <h2>Category & Sub-Category</h2>
       </div>
 
       <div class="item">
-          <p>{{product.category}} &amp; {{product.sub_category}}</p>
+          <p>{{product.selectedCategory}} &amp; {{product.selectedSubCategory}}</p>
       </div>
 
-      <div class="item item-toggle" style="background-color:#F5F5F5;">
-        <h2>Interested?</h2>
-     	<label class="toggle toggle-positive">
-       	  <input ng-model="interestedToBuy" type="checkbox">
-       	  <div class="track">
-            <div class="handle"></div>
-          </div>
-        </label> 
+      <div class="item item-divider">
+        <h2>Contact Information</h2>
       </div>
 
-      <div ng-class="{'item':true,'hidden-item':!interestedToBuy,'visible-item':interestedToBuy}">
-        <p><strong>Name: </strong>{{product.posted_by.name}}</p>
-        <p><strong>Contact Number: </strong>{{product.posted_by.phone}}</p>
+      <div ng-class="{'item':true,'hidden-item':!product.contact.disclose,'visible-item':product.contact.disclose}">
+        <p><strong>Email: </strong>{{product.contact.email}}</p>
+        <p><strong>Contact Number: </strong>{{product.contact.phone}}</p>
+      </div>
+
+      <div ng-class="{'item':true,'hidden-item':product.contact.disclose,'visible-item':!product.contact.disclose}">
+          <p>Seller didn't disclose Contact details</p>
+          <button class="button button-block button-positive" ng-click="notifySeller()">Notify Seller</button>
       </div>
     </div>
   </ion-content>

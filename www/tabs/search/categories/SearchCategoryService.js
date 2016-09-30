@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.searchCategoryServices',[]);
 
-  app.factory('SearchCategoryService',['$http','$q',function($http,$q){
+  app.factory('SearchCategoryService',['$q','PouchDbService',function($q,PouchDbService){
   
     var categories=null;
 
@@ -9,8 +9,16 @@
       var defer=$q.defer();
 
       if(categories===null){
-        $http.get('tabs/search/categories/categories.json').then(function(data){
-          categories=data.data.categories;
+        PouchDbService.getDb().allDocs({include_docs:true}).then(function(resp){
+          categories=resp.rows.map(function(row){
+            return row.doc;    
+          }).filter(function(row){
+            if(row.type==='category'){
+              return true;
+            }
+
+            return false;
+          });
           defer.resolve(categories);
         },function(error){
           defer.reject(error);  

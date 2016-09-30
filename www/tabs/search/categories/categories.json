@@ -1,24 +1,34 @@
 {
     "categories":[
         {
+            "_id":"electronics",
             "name":"Electronics",
-            "items":["Computers","Laptops","Accessories","Games","Consoles"]
+            "items":["Computers","Laptops","Accessories","Games","Consoles"],
+            "type":"category"
         },
         {
+            "_id":"vechicles",
             "name":"Vehicles",
-            "items":["Cars","Bikes"]
+            "items":["Cars","Bikes"],
+            "type":"category"
         },
         {
+            "_id":"household_articles",
             "name":"Household Articles",
-            "items":["Iron Box","Bottles"]
+            "items":["Iron Box","Bottles"],
+            "type":"category"            
         },
         {
-            "name":"Home",
-            "items":["Paying Guest","Hostel","Apartments"]
+            "_id":"accomodation",
+            "name":"Accomodation",
+            "items":["Rent","Buy"],
+            "type":"category"            
         },
         {
+            "_id":"miscellaneous",
             "name":"Miscellaneous",
-            "items":["Shirts","T-Shits"]
+            "items":["Watches","Books"],
+            "type":"category"            
         }
     ]
 }
