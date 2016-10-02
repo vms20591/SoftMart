@@ -12,7 +12,7 @@
   Defining the main app module named "softMart" and mentioning all the modules required in an Array as the 2nd argument
   This makes sure that all dependencies are already injected and doesn't require checking in other modules and losing track
 */
-var app=angular.module('softMart', ['ionic','ngCordova','softMart.pouchDbServices','softMart.initController','softMart.tabsControllers','softMart.tabsServices','softMart.softMartFilters']);
+var app=angular.module('softMart', ['ionic','ngCordova','softMart.pouchDbServices','softMart.deviceInformationService','softMart.initController','softMart.tabsControllers','softMart.tabsServices','softMart.adDetailsControllers','softMart.adDetailsServices','softMart.callbackServices','softMart.softMartFilters']);
 
 /*
   Defining states and their transitions that form the heart of the application
@@ -32,6 +32,10 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
       }
     },
     controller:'InitController'
+  }).state('ad-detail',{
+    url:'/ad/:adId',
+    templateUrl:'ads/ad-details.html',
+    controller:'AdDetailsController'
   }).state('tabs',{
     url:'/tabs',
     abstract:true,
@@ -58,24 +62,17 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
     url:'/category',
     views:{
       'search-tab-home':{
-        templateUrl:'tabs/search/categories/search-tab.html',
+        templateUrl:'tabs/search/categories/search-categories.html',
         controller:'SearchCategoryController'
       }
     }
   }).state('tabs.search.home',{
-      url:'/home/:category/:subCategory',
+      url:'/results/:category/:subCategory',
+      cache:false,
     views:{
       'search-tab-home':{
-        templateUrl:'tabs/search/results/search-tab-home.html',
+        templateUrl:'tabs/search/results/search-results.html',
         controller:'SearchResultController'
-      }
-    }
-  }).state('tabs.search.detail',{
-    url:'/detail/:productId',
-    views:{
-      'search-tab-home':{
-        templateUrl:'tabs/search/results/product-details.html',
-        controller:'ProductDetailsController'
       }
     }
   }).state('tabs.post-ad',{
@@ -98,26 +95,34 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
     url:'/cart',
     views:{
       'my-account-tab':{
-        templateUrl:'tabs/user/show-cart.html',
+        templateUrl:'tabs/user/cart/show-cart.html',
         controller:'AdsCartController'
       }
     }
-  }).state('tabs.product-detail',{
-      url:'/:productId',
-      views:{
-        'my-account-tab':{
-          templateUrl:'tabs/search/results/product-details.html',
-          controller:'ProductDetailsController'
-        }
-      }
   }).state('tabs.my-posted-ads',{
       url:'/posted-ads',
       views:{
         'my-account-tab':{
-          templateUrl:'tabs/user/my-posted-ads.html',
+          templateUrl:'tabs/user/posted-ads/my-posted-ads.html',
           controller:'AdsPostedController'
         }
       }
+  }).state('tabs.my-profile',{
+      url:'/posted-ads',
+      views:{
+        'my-account-tab':{
+          templateUrl:'tabs/user/user-profile/user-profile.html',
+          controller:'UserProfileController'
+        }
+      }
+  }).state('tabs.my-ad-detail',{
+    url:'/ad/:adId',
+    views:{
+      'my-account-tab':{
+        templateUrl:'tabs/user/ad-detail/my-ad-details.html',
+        controller:'MyAdDetailsController'
+      }
+    }
   });
 }]);
 

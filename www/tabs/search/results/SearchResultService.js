@@ -1,87 +1,49 @@
 (function(){
   var app=angular.module('softMart.searchResultServices',[]);
 
-  app.factory('SearchHomeService',['$http','$q','PouchDbService',function($http,$q,PouchDbService){
-    var products=null;
-    var productsInCart=[];
-    var db=PouchDbService.getDb();
+  app.factory('SearchResultService',['$http','$q','PouchDbService','PostAdService','UserAccountService',function($http,$q,PouchDbService,PostAdService,UserAccountService){
+    var searchResults={}
 
-    var filter_products=function(currentCategory){
-      return products.filter(function(product){
-	return product.selectedCategory===currentCategory.category && 
-	  product.selectedSubCategory===currentCategory.subCategory;
+    var adResults=null;
+    var _db=PouchDbService.getDb();
+
+    var filterAds=function(currentCategory){
+      return adResults.filter(function(ad){
+	      return ad.selectedCategory===currentCategory.category && 
+	        ad.selectedSubCategory===currentCategory.subCategory;
       });      
     };
-
-    var format_attachments=function(attachments){
+    
+    var transformAttachments=function(attachments){
       angular.forEach(attachments,function(value,key,obj){
         obj[key]['src']=URL.createObjectURL(value.data);
       });
     };
 
-    var format_products=function(resp){
-      return resp.rows.map(function(row){
-        return row.doc;
-      }).filter(function(row){
-        if(row.type==='ads'){
-          row.postedOn=new Date(row.postedOn);
-          
-          if(row._attachments){
-            format_attachments(row._attachments);
-          };
-
-          return true;
-        }
-
-        return false;
-      });
-    };
-
-    var addToCart=function(item){
-      var flag=false;
-
-      if(item && productsInCart.length>0){
-        productsInCart.forEach(function(product){
-          if(product===item){
-            flag=true;
-          }
-        });
-      }
+    var getPostedAds=function(){
+      if(adResults===null){
       
-      if(item && !flag){
-        productsInCart.push(item);
-      }
-    };
+        var options={
+          include_docs:true,
+          attachments:true,
+          binary:true
+        };
+      
+        return PostAdService.getPostedAds(options).then(function(resp){
+          adResults=resp;
+          _db.changes({live:true,since:'now',include_docs:true,attachments:true,binary:true}).on('change',reactToChange);
 
-    var getLengthOfCart=function(){
-      return productsInCart.length;
-    };
 
-    var getProductsInCart=function(){
-      return productsInCart;
-    };
-
-    var removeFromCart=function(index){
-      productsInCart.splice(index,1);
-    };
-
-    var fetchProducts=function(){
-      if(products===null){
-        return $q.when(db.allDocs({include_docs:true,attachments:true,binary:true})).then(function(resp){
-          products=format_products(resp);
-
-          db.changes({live:true,since:'now',include_docs:true}).on('change',reactToChange);
-
-          return products;
+          return adResults;
         }).catch(function(err){
           console.log(err);
         });
       }
       else{
-        return $q.when(products);
+        return $q.when(adResults);
       }
     };
-
+    
     var reactToChange=function(change){
       console.log("Change: ",change);
         
@@ -105,73 +67,55 @@
     };
 
     var reactToDelete=function(id){
-      var index=binarySearch(products,id);
+      var index=binarySearch(adResults,id);
 
-      var product=products[index];
+      var ad=adResults[index];
 
-      if(product && product._id===id){
-        products.splice(index,1)
+      if(ad && ad._id===id){
+        adResults.splice(index,1)
       }
     };
 
-    var reactToInsertOrUpdate=function(newProduct){
-      var index=binarySearch(products,newProduct.id);
+    var reactToInsertOrUpdate=function(newAd){
+      var index=binarySearch(adResults,newAd.id);
 
-      var product=products[index];
+      var ad=adResults[index];
+      
+      formatAttachments(newAd.doc._attachments);
 
-      if(product && product._id===newProduct.id){
-        products[index]=newProduct.doc;
+      if(ad && ad._id===newAd.id){
+        adResults[index]=newAd.doc;
       }
       else{
-        products.splice(index,0,newProduct.doc);
+        adResults.splice(index,0,newAd.doc);
       }
     };
 
-    var getResults=function(currentCategory){
+    searchResults.addToCart=function(ad){
+      UserAccountService.addToCart(ad);
+    };
+
+    searchResults.getSearchResults=function(currentCategory){
       var defer=$q.defer();
       var results=[];
 
-      if(products===null){
-        fetch_products().then(function(data){
-          results=filter_products(currentCategory);
+      if(adResults===null){
+        getPostedAds().then(function(data){
+          results=filterAds(currentCategory);
           defer.resolve(results);
         },function(error){
           defer.reject(error);
         });
       }
       else{
-        results=filter_products(currentCategory);
+        results=filterAds(currentCategory);
         defer.resolve(results);
       }
 
       return defer.promise;
     };
 
-    return {
-      fetchProducts:fetchProducts,
-      getResults:getResults,
-      addToCart:addToCart,
-      getLengthOfCart:getLengthOfCart,
-      getProductsInCart:getProductsInCart,
-      removeFromCart:removeFromCart
-    };
+    return searchResults;
   }]);
-
-  app.factory('ProductDetailService',function(){
-    var currentProduct=null;
-
-    var setCurrentProduct=function(product){
-      currentProduct=product;
-    };
-
-    var getCurrentProduct=function(){
-      return currentProduct;
-    };
-
-    return {
-      setCurrentProduct:setCurrentProduct,
-      getCurrentProduct:getCurrentProduct
-    };
-  });
 
 })();

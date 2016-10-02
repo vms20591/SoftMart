@@ -1,18 +1,23 @@
 <ion-view>
   <ion-nav-title>
-    <i class='ion-cube'></i> <span style='font-weight:bold;'>Product Details</span>
+    <i class='ion-cube'></i> <span style='font-weight:bold;'>Ad Details</span>
   </ion-nav-title>
-  <ion-content>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goBack()">
+        <i class="icon ion-ios-arrow-back"> Back</i> 
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="padding" scroll="true">
     <div class="item card">
       <div class="item item-divider">
-        <h2>{{product.name}}</h2>
+        <h2>{{ad.name}}</h2>
       </div>
 
       <div class="item item-body">
           <img class="full-image" ng-src="{{selectedImg}}">
 
         <ul class="img-thumbnail-ul">
-          <li ng-repeat="src in imgSrcs">
+          <li ng-repeat="src in imgSrcs track by $index">
             <div class="img-thumb-div">
               <img ng-click="updateSelectedImg($index)" ng-src="{{src}}">
             </div>      
@@ -21,11 +26,11 @@
       </div>
 
       <div class="item item-divider">
-        <h2>Product Description</h2>
+        <h2>Description</h2>
       </div>
 
       <div class="item">
-        <p>{{product.description}}</p>
+        <p>{{ad.description}}</p>
       </div>
       
       <div class="item item-divider">
@@ -33,15 +38,15 @@
       </div>
 
       <div class="item">
-        <p>{{product.price | currency:"£":2}}
+        <p>{{ad.price | currency:"£":2}}</p>
       </div>
 
-      <div class="item item-divider">
+      <div class="item item-divider" ng-if="ad.manufacturedYear">
         <h2>Manufactured Year</h2>
       </div>
 
-      <div class="item">
-        <p>{{product.manufacturedYear | sinceTimePassed:"YYYY"}}</p>
+      <div class="item" ng-if="ad.manufacturedYear">
+        <p>{{ad.manufacturedYear | sinceTimePassed:"YYYY"}}</p>
       </div>
 
       <div class="item item-divider">
@@ -49,7 +54,7 @@
       </div>
 
       <div class="item">
-          <p>{{product.postedOn | date:"MM/dd/yyyy" | sinceTimePassed:"MM/DD/YYYY"}}</p>
+          <p>{{ad.postedOn | date:"MM/dd/yyyy" | sinceTimePassed:"MM/DD/YYYY"}}</p>
       </div>
 
       <div class="item item-divider">
@@ -57,19 +62,19 @@
       </div>
 
       <div class="item">
-          <p>{{product.selectedCategory}} &amp; {{product.selectedSubCategory}}</p>
+          <p>{{ad.selectedCategory}} &amp; {{ad.selectedSubCategory}}</p>
       </div>
 
       <div class="item item-divider">
         <h2>Contact Information</h2>
       </div>
 
-      <div ng-class="{'item':true,'hidden-item':!product.contact.disclose,'visible-item':product.contact.disclose}">
-        <p><strong>Email: </strong>{{product.contact.email}}</p>
-        <p><strong>Contact Number: </strong>{{product.contact.phone}}</p>
+      <div ng-class="{'item':true,'hidden-item':!ad.contact.disclose,'visible-item':ad.contact.disclose}">
+        <p><strong>Email: </strong>{{ad.contact.email}}</p>
+        <p><strong>Contact Number: </strong>{{ad.contact.phone}}</p>
       </div>
 
-      <div ng-class="{'item':true,'hidden-item':product.contact.disclose,'visible-item':!product.contact.disclose}">
+      <div ng-class="{'item':true,'hidden-item':ad.contact.disclose,'visible-item':!ad.contact.disclose}">
           <p>Seller didn't disclose Contact details</p>
           <button class="button button-block button-positive" ng-click="notifySeller()">Notify Seller</button>
       </div>

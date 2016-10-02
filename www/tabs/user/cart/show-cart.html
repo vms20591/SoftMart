@@ -1,0 +1,23 @@
+<ion-view>
+  <ion-nav-title>
+    <i class='ion-ios-cart'></i> <span style='font-weight:bold;'>Ads Cart</span>
+  </ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <div class="item item-text-wrap item-thumbnail-left item-icon-right" ng-repeat="ad in cart">
+        <img ng-src="{{getDefaultImage(ad)}}" style="cursor:pointer;" ng-click="showAdDetails(ad)">
+        <h2>{{ad.name}}</h2>
+        <p>{{ad.description}}</p>
+        <i class="icon ion-trash-a" style="cursor:pointer;" ng-click="removeAdFromCart(ad)"></i>
+      </div>
+    </div>
+  </ion-content>
+  <div ng-if="cart.length===0">
+    <div class="container-under-construction">
+      <div class="top-left-center">
+        <h2>No Ads in cart</h2>
+        <img src="assets/img/SoftMart_128.svg">
+      </div>
+    </div>
+  </div>
+</ion-view>

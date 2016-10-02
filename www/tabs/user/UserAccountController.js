@@ -1,46 +1,41 @@
 (function(){
-  var app=angular.module('softMart.userControllers',[]);
+  var app=angular.module('softMart.userControllers',['softMart.adsPostedControllers','softMart.cartControllers','softMart.userProfileControllers','softMart.myAdDetailsControllers']);
 
-  app.controller('UserAccountController',['$scope','$ionicPlatform','SearchHomeService','UserAccountService',function($scope,$ionicPlatform,SearchHomeService,UserAccountService){
-    $scope.itemsInCart=0;
-    $scope.adsPostedByUserLength=0;
+  app.controller('UserAccountController',['$scope','$ionicPlatform','SearchResultService','UserAccountService','CallbackService',function($scope,$ionicPlatform,SearchResultService,UserAccountService,CallbackService){
+    $scope.adsInCart=[];
+    $scope.adsPostedByUser=[];
+    $scope.adsResponded=[];
     
     $ionicPlatform.ready(function(){
-      $scope.itemsInCart=SearchHomeService.getLengthOfCart();
-      UserAccountService.getAdsPostedByUserLength().then(function(length){
-        $scope.adsPostedByUserLength=length;  
+      UserAccountService.getAdsInCart().then(function(resp){
+        $scope.adsInCart=resp;
       });
-    });
-
-    $scope.doRefresh=function(){
-      $scope.itemsInCart=SearchHomeService.getLengthOfCart();
-
-      $scope.$broadcast('scroll.refreshComplete');
-    };
-  }]);
-
-  app.controller('AdsCartController',['$scope','$state','ProductDetailService','SearchHomeService',function($scope,$state,ProductDetailService,SearchHomeService){
-    $scope.cart=SearchHomeService.getProductsInCart();
-
-    $scope.showProductDetails=function(item){
-      ProductDetailService.setCurrentProduct(item);
-
-      $state.go('tabs.product-detail',{productId:item.id});
-    };
-
-    $scope.removeFromCart=function(index){
-      SearchHomeService.removeFromCart(index);
-    };
-  }]);
-
-  app.controller('AdsPostedController',['$scope','$ionicPlatform','UserAccountService',function($scope,$ionicPlatform,UserAccountService){
-    $scope.adsPosted=[];
-
-    $ionicPlatform.ready(function(){
+      
       UserAccountService.getAdsPostedByUser().then(function(ads){
-        $scope.adsPosted=ads;
+        $scope.adsPostedByUser=ads;  
+      });
+      
+      CallbackService.registerForAddItem('ads.add',function(){
+        $scope.refreshAdsAndCart();
+      });
+      
+      CallbackService.registerForEditItem('ads.edit',function(){
+        $scope.refreshAdsAndCart();
+      });
+      
+      CallbackService.registerForDeleteItem('ads.delete',function(){
+        $scope.refreshAdsAndCart();
       });
     });
     
+    $scope.refreshAdsAndCart=function(){
+      UserAccountService.updateCart().then(function(resp){
+        $scope.adsInCart=resp;
+      });
+      
+      UserAccountService.getAdsPostedByUser().then(function(ads){
+        $scope.adsPostedByUser=ads;  
+      });
+    };
   }]);
 })();

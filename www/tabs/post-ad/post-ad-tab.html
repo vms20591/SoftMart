@@ -21,12 +21,12 @@
     </label>
 
     <label class="item item-input item-select">
-      <!--<div class="input-label">
+      <div class="input-label">
         Manufactured Year
       </div>
-      <select ng-model="product.manufacturedYear" ng-options="option as option for option in manufacturedYearOptions"></select>-->
-      <span class="input-label">Manufactured Year</span>
-      <input type="month" ng-model="product.manufacturedYear">
+      <select ng-model="product.manufacturedYear" ng-options="option as option for option in manufacturedYearOptions"></select>
+      <!--<span class="input-label">Manufactured Year</span>
+      <input type="month" ng-model="product.manufacturedYear">-->
     </label>
 
     <label class="item item-input item-select">
@@ -67,26 +67,30 @@
       </label>
     </div>
 
-    <div class="item item-divider">
+    <div class="item item-divider" ng-if="inMobileMode">
       <h2>Upload Photos</h2>
     </div>
 
-    <div class="item item-icon-right">
+    <div class="item item-icon-right" ng-if="inMobileMode">
       From Camera
       <i ng-click="chooseFromCamera()" class="icon ion-ios-camera"></i>
     </div>
 
-    <div class="item item-icon-right">
+    <div class="item item-icon-right" ng-if="inMobileMode">
       From Gallery  
       <i ng-click="chooseFromGallery()" class="icon ion-images"></i>
     </div>
 
-    <div class="item item-image">
-      <img ng-src="{{selectedImg}}">    
+    <div class="item item-image" ng-if="inMobileMode && imgSrcs">
+      <!--
+        From stackoverflow thread http://stackoverflow.com/questions/22092687/empty-ng-src-doesnt-update-image
+        Even after making the image src to empty, angular js retains the last src
+      -->
+      <img ng-src="{{selectedImg || '//:0'}}">    
     </div>
     
-    <ul class="img-thumbnail-ul">
-      <li ng-repeat="src in imgSrcs">
+    <ul class="img-thumbnail-ul" ng-if="inMobileMode && imgSrcs">
+      <li ng-repeat="src in imgSrcs track by $index">
         <div class="img-thumb-div">
           <img ng-click="updateSelectedImg($index)" ng-src="{{src}}">
         </div>      

@@ -1,30 +1,35 @@
 (function(){
   var app=angular.module('softMart.searchResultControllers',[]);
 
-  app.controller('SearchResultController',['$scope','$timeout','$state','$stateParams','$ionicPlatform','SearchHomeService','ProductDetailService',function($scope,$timeout,$state,$stateParams,$ionicPlatform,SearchHomeService,ProductDetailService){
+  app.controller('SearchResultController',['$scope','$timeout','$state','$stateParams','$ionicPlatform','SearchResultService','AdDetailService',function($scope,$timeout,$state,$stateParams,$ionicPlatform,SearchResultService,AdDetailService){
 
-    $scope.products=[];
+    $scope.adResults=[];
     $scope.currentCategory=null;
     $scope.propertyName="price";
     $scope.reverse=false;
     $scope.searchText='';
+    $scope.noAdsText='';
 
-    $scope.init=function(){
-      SearchHomeService.fetchProducts().then(function(products){
-        $scope.currentCategory={
-          category:$stateParams.category,
-          subCategory:$stateParams.subCategory
-        };
-	
-	return SearchHomeService.getResults($scope.currentCategory);
-      }).then(function(products){
-	$scope.products=products;
-      });
-    };
+    $ionicPlatform.ready(function(){
+      $scope.currentCategory={
+        category:$stateParams.category,
+        subCategory:$stateParams.subCategory
+      };
+      
+      $scope.show();
 
-    $scope.init();  
+      $timeout(function(){
+        SearchResultService.getSearchResults($scope.currentCategory).then(function(products){
+          $scope.adResults=products;
+          
+          $scope.noAdsText='No Ads posted in this category.';
+        });
+      
+        $scope.hide();
+      },1000);
+    });
 
-    $scope.showProductsByOptions=[
+    $scope.showAdsByOptions=[
       {
         name:"Low Price",
         id:1,
@@ -40,65 +45,51 @@
       {
         name:"Newest",
         id:3,
-        propertyName:"date",
+        propertyName:"postedOn",
         reverse:true
       },
       {
         name:"Oldest",
         id:4,
-        propertyName:"date",
+        propertyName:"postedOn",
         reverse:false
       }
     ];
 
-    $scope.showProductsBy=$scope.showProductsByOptions[0];
+    $scope.showAdsBy=$scope.showAdsByOptions[2];
 
-    $scope.showProductsByUpdate=function(showProductsBy){
-      $scope.showProductsBy=showProductsBy;
-      $scope.propertyName=$scope.showProductsBy.propertyName;
-      $scope.reverse=$scope.showProductsBy.reverse;
-
+    $scope.showAdsOnUpdate=function(showAdsBy){
       $scope.show();
 
       $timeout(function(){
+        $scope.showAdsBy=showAdsBy;
+        $scope.propertyName=$scope.showAdsBy.propertyName;
+        $scope.reverse=$scope.showAdsBy.reverse;
+      
         $scope.hide();
-      },1000);
+      },300);
     };
 
-    $scope.addToCart=function(item){
-      SearchHomeService.addToCart(item);
+    $scope.addToCart=function(ad){
+      SearchResultService.addToCart(ad);
 
       $scope.showAlert({
         title: 'Add to Cart',
-        template: 'Product added to Cart'
+        template: 'Ad successfully added to Cart'
       });
     };
 
-    $scope.search=function(){
-      $scope.show();
+    $scope.showAdDetails=function(ad){
+      AdDetailService.setCurrentAd(ad);
 
-      $timeout(function(){
-        $scope.hide();
-      },2000);
+      $state.go('ad-detail',{adId:ad._id});
     };
 
-    $scope.loadMore=function(){
-      $scope.show();
-      $timeout(function(){
-        $scope.hide();
-      },2000);
-    };
-
-    $scope.showProductDetails=function(item){
-      ProductDetailService.setCurrentProduct(item);
-
-      $state.go('tabs.search.detail',{productId:item.id});
-    };
-
-    $scope.getDefaultImage=function(product){
+    $scope.getDefaultImage=function(ad){
       var returnValue='assets/img/noicon.svg';
-      angular.forEach(product._attachments,function(value,key){
-        if(key===product.defaultImg){
+      
+      angular.forEach(ad._attachments,function(value,key){
+        if(key===ad.defaultImg){
           returnValue=value.src;
         }
       });
@@ -107,34 +98,4 @@
     };
   }]);
 
-  app.controller('ProductDetailsController',['$scope','$stateParams','$ionicPlatform','ProductDetailService',function($scope,$stateParams,$ionicPlatform,ProductDetailService){
-    //This "vm" represents list of images
-    $scope.imgSrcs=[];
-
-    //This "vm" represents the currently selected img
-    $scope.selectedImg='assets/img/noicon.svg';
-
-    $ionicPlatform.ready(function(){
-      $scope.product=ProductDetailService.getCurrentProduct(); 
-
-      angular.forEach($scope.product._attachments,function(value,key){
-        if(key===$scope.product.defaultImg){
-          $scope.selectedImg=value.src;
-        }
-
-        $scope.imgSrcs.push(value.src);
-      });
-    });
-
-    $scope.updateSelectedImg=function(index){
-      $scope.selectedImg=$scope.imgSrcs[index];
-    };
-
-    $scope.notifySeller=function(){
-      $scope.showAlert({
-        title: 'Success',
-        template: 'Notify Seller Successful'
-      });
-    };
-  }]);
 })();

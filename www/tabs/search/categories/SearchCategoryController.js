@@ -1,9 +1,11 @@
 (function(){
   var app=angular.module('softMart.searchCategoryControllers',[]);
     
-  app.controller('SearchCategoryController',['$scope','SearchCategoryService','$state',function($scope,SearchCategoryService,$state){
+  app.controller('SearchCategoryController',['$scope','$state','$ionicPlatform','SearchCategoryService',function($scope,$state,$ionicPlatform,SearchCategoryService){
 
-    $scope.groups = SearchCategoryService.getCategories();
+    $ionicPlatform.ready(function(){
+      $scope.groups = SearchCategoryService.getCategories();
+    });
 
     /*
     * if given group is the selected group, deselect it

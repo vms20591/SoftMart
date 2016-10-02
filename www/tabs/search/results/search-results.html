@@ -4,7 +4,7 @@
   </ion-nav-title>
   <ion-content class="padding" scroll="true">
     <div class="row responsive-sm" style="text-align:center">
-      <h2>Products</h2>
+      <h2>Ad Results</h2>
     </div>
     <div class="row responsive-sm product-gallery">
       <div class="col">
@@ -22,56 +22,51 @@
     </div>
     <div class="row responsive-sm product-gallery">
       <p>
-        <center><strong>Found {{products.length}} products</strong></center>
+        <center><strong>Found {{adResults.length}} matching Ad</strong></center>
       </p>
     </div>
     <hr/>
-    <div ng-if="products.length>0" class="row responsive-sm product-gallery">
+    <div ng-if="adResults.length>0" class="row responsive-sm product-gallery">
       <div class="list">
         <label class="item item-input item-select">
           <div class="input-label">
            Show By
           </div>
-          <select ng-model="showProductsBy" ng-change="showProductsByUpdate(showProductsBy)" ng-options="option.name for option in showProductsByOptions track by option.id">
+          <select ng-model="showAdsBy" ng-change="showAdsOnUpdate(showAdsBy)" ng-options="option.name for option in showAdsByOptions track by option.id">
           </select>
         </label>
       </div>
     </div>
     <div class="row responsive-sm product-gallery">
-        <div class="col col-20" ng-repeat="item in products | orderBy:propertyName:reverse | limitTo:5 | filter:searchText">
+        <div class="col col-20" ng-repeat="ad in adResults | orderBy:propertyName:reverse | filter:searchText">
         <div class="list card">
           <div class="item item-body">
             <div class="item-image">
-                <img ng-src="{{getDefaultImage(item)}}">
+                <img ng-src="{{getDefaultImage(ad)}}">
             </div>
             <p align="center" class="product-title">
-              <b ng-bind="item.name"></b>
+              <b ng-bind="ad.name"></b>
             </p>
             <hr/>
             <p class="product-title">
-            Price: {{item.price | currency:"£":2}}
+            Price: {{ad.price | currency:"£":2}}
             </p>
             <hr/>
           </div>
-          <button class="item item-icon-left positive" ng-click="addToCart(item);">
+          <button class="item item-icon-left positive" ng-click="addToCart(ad);">
             <i class="icon ion-ios-cart-outline"></i>
             Shortlist
           </button>
-          <a class="item item-icon-left positive" ng-click="showProductDetails(item)">
+          <a class="item item-icon-left positive" ng-click="showAdDetails(ad)">
             <i class="icon ion-forward"></i>
             View Details
           </a>
         </div>
       </div>
     </div>
-    <div ng-if="products.length>5" style="text-align:center;" class="row responsive-sm">
+    <div ng-if="adResults.length===0" style="text-align:center;" class="row responsive-sm">
       <div class="col col-50 col-offset-25">
-        <button class="button button-positive" ng-click="loadMore()">More...</button>
-      </div>
-    </div>
-    <div ng-if="products.length===0" style="text-align:center;" class="row responsive-sm">
-      <div class="col col-50 col-offset-25">
-        <h3>No results found...</h3>
+        <h3 ng-bind='noAdsText'></h3>
       </div>
     </div>
   </ion-content>

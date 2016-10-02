@@ -4,16 +4,11 @@
   </ion-nav-title>
   <ion-content>
     <div class="list">
-      <div class="item item-text-wrap item-thumbnail-left" ng-repeat="ad in adsPosted">
-        <img src="assets/img/noicon.svg">
+      <div class="item item-text-wrap item-thumbnail-left item-icon-right" ng-repeat="ad in adsPosted">
+        <img ng-src="{{getDefaultImage(ad)}}" style="cursor:pointer;" ng-click="showAdDetails(ad)">
         <h2>{{ad.name}}</h2>
         <p>{{ad.description}}</p>
-        <button class="button button-small button-positive"
-          ng-click="">View</button>
-        <button class="button button-small button-positive"
-          ng-click="">Edit</button>
-        <button class="button button-small button-assertive"
-          ng-click="">Remove</button>
+        <i class="icon ion-trash-a" style="cursor:pointer;" ng-click="deletePostedAd(ad,$index)"></i>
       </div>
     </div>
   </ion-content>

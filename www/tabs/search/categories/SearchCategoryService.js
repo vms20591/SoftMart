@@ -2,7 +2,6 @@
   var app=angular.module('softMart.searchCategoryServices',[]);
 
   app.factory('SearchCategoryService',['$q','PouchDbService',function($q,PouchDbService){
-  
     var categories=null;
 
     var setCategories=function(){

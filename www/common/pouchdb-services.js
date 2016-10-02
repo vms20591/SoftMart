@@ -58,7 +58,8 @@
             lastname:"Wilson",
             email:"sam.wilson@shield.org",
             phone:"7489367123",
-            type:"user"
+            type:"user",
+            cart:[]
           }
 
           //Store the "prepopulated" and "user" docs

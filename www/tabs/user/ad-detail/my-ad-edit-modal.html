@@ -1,0 +1,79 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Edit Ad</h1>
+    <button class="button button-clear button-primary" ng-click="closeEditModal()">Cancel</button>
+  </ion-header-bar>
+  <ion-content class="padding" scroll="true">
+    <div class="list">
+      <div class="item item-divider">
+        <h2>Ad Information</h2>
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Title</span>
+        <input ng-model="adCopy.name" type="text" placeholder="">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">Description</span>
+        <textarea ng-model="adCopy.description" rows="5" placeholder=""></textarea>
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">Price</span>
+        <input ng-model="adCopy.price" type="number" placeholder="">
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Manufactured Year
+        </div>
+        <select ng-model="adCopy.manufacturedYear" ng-options="option as option for option in manufacturedYearOptions"></select>
+        <!--<span class="input-label">Manufactured Year</span>
+        <input type="month" ng-model="adCopy.manufacturedYear">-->
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Category
+        </div>
+        <select ng-model="adCopy.selectedCategory" ng-change="updateCategoryOptions(adCopy.selectedCategory)" ng-options="option.name for option in categorySelectOptions track by option.name"></select>
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Sub-Category
+        </div>
+        <select ng-model="adCopy.selectedSubCategory" ng-options="option as option for option in subCategorySelectOptions"></select>
+      </label>
+      
+      <div class="item item-divider">
+        <h2>Contact Information</h2>
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Mobile</span>
+        <input ng-model="adCopy.contact.phone" type="tel" placeholder="">
+      </label>
+
+      <label class="item item-input">
+        <span class="input-label">Email</span>
+        <input ng-model="adCopy.contact.email" type="email" placeholder="">
+      </label>
+
+      <div class="item item-toggle">
+        Disclose contact details?
+        <label class="toggle toggle-positive">
+          <input ng-model="adCopy.contact.disclose" type="checkbox">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+     
+      <button class="button button-block button-positive" ng-click="updateAndSaveAd()">
+        Update
+      </button>
+    </div>
+  </ion-content>
+</div>

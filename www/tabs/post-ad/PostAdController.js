@@ -10,7 +10,7 @@
   /*
     PostAdController - manages create, update and delete of Ads posted by the logged in user
    */
-  app.controller('PostAdController',['$scope','$cordovaCamera','PostAdService','UserAccountService',function($scope,$cordovaCamera,PostAdService,UserAccountService){
+  app.controller('PostAdController',['$scope','$cordovaCamera','$ionicPlatform','DeviceInformationService','PostAdService','UserAccountService',function($scope,$cordovaCamera,$ionicPlatform,DeviceInformationService,PostAdService,UserAccountService){
     /*
       Variable declaration section
      */
@@ -21,26 +21,37 @@
           disclose:false
         }
     };
-
+    
     //Camera specific source type
-    var fromCameraSrcType=Camera.PictureSourceType.CAMERA;
+    var fromCameraSrcType;
 
     //Gallery specific source type
-    var fromGallerySrcType=Camera.PictureSourceType.PHOTOLIBRARY;
+    var fromGallerySrcType;
 
     //Options for uploading photos
-    var cameraOptions={
-      quality:100,
-      destinationType:Camera.DestinationType.DATA_URL,
-      sourceType:Camera.PictureSourceType.CAMERA,
-      allowEdit:true,
-      encodingType:Camera.EncodingType.JPEG,
-      targetWidth:300,
-      targetHeight:300,
-      popoverOptions:CameraPopoverOptions,
-      saveToPhotoAlbum:true,
-      correctOrientation:true
-    };
+    var cameraOptions;
+    
+    $ionicPlatform.ready(function(){
+      $scope.inMobileMode=DeviceInformationService.inMobileMode();
+      if($scope.inMobileMode){
+        fromCameraSrcType=Camera.PictureSourceType.CAMERA;
+
+        fromGallerySrcType=Camera.PictureSourceType.PHOTOLIBRARY;
+
+        cameraOptions={
+          quality:100,
+          destinationType:Camera.DestinationType.DATA_URL,
+          sourceType:Camera.PictureSourceType.CAMERA,
+          allowEdit:true,
+          encodingType:Camera.EncodingType.JPEG,
+          targetWidth:300,
+          targetHeight:300,
+          popoverOptions:CameraPopoverOptions,
+          saveToPhotoAlbum:true,
+          correctOrientation:true
+        };
+      }
+    });
 
     //This "vm" represents list of images
     $scope.imgSrcs=[];
@@ -93,6 +104,12 @@
      */
     $scope.initializeProduct=function(){
       $scope.product=angular.copy(initProduct);
+      
+      $scope.imgSrcs=[];
+      
+      //From stackoverflow thread http://stackoverflow.com/questions/22092687/empty-ng-src-doesnt-update-image
+      //Even after making the image src to empty, angular js retains the last src
+      $scope.selectedImg='//:0'; 
     };
 
     /*
@@ -111,7 +128,7 @@
       //Store the user who posted it from the logged in user
       $scope.product.user_id=UserAccountService.getLoggedInUser()._id;
 
-      if($scope.imgSrcs.length>0){
+      if($scope.inMobileMode && $scope.imgSrcs.length>0){
         $scope.product._attachments={};
 
         angular.forEach($scope.imgSrcs,function(value,key){
@@ -130,7 +147,7 @@
 
         });
       }
-
+      
       //Call the service to persist the Ad
       PostAdService.postAd($scope.product).then(function(resp){
         console.log("New Posted Ad: ",resp);

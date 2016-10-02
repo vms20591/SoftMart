@@ -1,38 +1,93 @@
 (function(){
   var app=angular.module('softMart.postAdServices',[]);
 
-  app.factory('PostAdService',['$q','SearchCategoryService','PouchDbService',function($q,SearchCategoryService,PouchDbService){
+  app.factory('PostAdService',['$q','SearchCategoryService','PouchDbService','CallbackService',function($q,SearchCategoryService,PouchDbService,CallbackService){
+    var postAds={};
     var manufacturedYearOptions=[];
     var start=1970;
     var stop=new Date().getUTCFullYear();
-    var postedAds;
     var _db=PouchDbService.getDb();
+    
+    var transformAttachments=function(attachments){
+      angular.forEach(attachments,function(value,key,obj){
+        obj[key]['src']=URL.createObjectURL(value.data);
+      });
+    };
 
-    for(var i=start;i<=stop;i++){
-      manufacturedYearOptions.push(i);
-    }
+    var transformAds=function(resp){
+      return resp.rows.map(function(row){
+        return row.doc;
+      }).filter(function(row){
+        if(row.type==='ads'){
+          row.postedOn=new Date(row.postedOn);
+          
+          if(row._attachments){
+            transformAttachments(row._attachments);
+          };
 
-    var getCategories=function(){
+          return true;
+        }
+
+        return false;
+      });
+    };
+
+    postAds.getCategories=function(){
       return SearchCategoryService.getCategories();
     }
 
-    var getManufacturedYearOptions=function(){
+    postAds.getManufacturedYearOptions=function(){
+    
+      if(manufacturedYearOptions.length===0){
+        for(var i=start;i<=stop;i++){
+          manufacturedYearOptions.push(i);
+        }      
+      }
+      
       return manufacturedYearOptions;
     }
     
-    var postAd=function(product){
-      return $q.when(_db.post(product));
+    postAds.postAd=function(product){
+      return $q.when(_db.post(product)).then(function(resp){
+        CallbackService.notifyOnAddItem('ads.add');
+                
+        return resp;
+      });
     };
 
-    var getPostedAds=function(userId){
-      return $q.when(_db.allDocs({include_docs:true}));
+    postAds.getPostedAds=function(options){
+      if(!options){
+        options={
+          include_docs:true
+        };
+      }
+      return $q.when(_db.allDocs(options)).then(function(resp){
+        return transformAds(resp);
+      });
     };
+    
+    postAds.updatePostedAd=function(ad){
+      return $q.when(_db.put(ad)).then(function(resp){
+        CallbackService.notifyOnEditItem('ads.edit');
+        
+        return resp;
+      }).catch(function(err){
+        console.log("Error occured while updating Ad: ",err);
+      });
+    };
+    
+    postAds.deletePostedAd=function(ad){
+      return $q.when(_db.get(ad._id)).then(function(resp){
+        resp._deleted=true;
 
-    return {
-      getCategories:getCategories,
-      getManufacturedYearOptions:getManufacturedYearOptions,
-      postAd:postAd,
-      getPostedAds:getPostedAds
+        return _db.put(resp);
+      }).then(function(resp){
+        CallbackService.notifyOnDeleteItem('ads.delete');
+        
+        return resp;
+      });
     };
+    
+    return postAds;
   }]);
 })();

@@ -1,0 +1,56 @@
+<ion-view>
+  <ion-nav-title>
+    <i class='ion-person'></i> <span style='font-weight:bold;'>User Profile</span>
+  </ion-nav-title>
+  <ion-nav-buttons side="secondary">
+    <button class="button button-icon ion-compose">
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="padding" scroll="true">
+    <div class="item card">
+      <div class="item item-body">
+          <img class="full-image" ng-src="{{selectedImg}}">
+      </div>
+
+      <div class="item item-divider">
+        <h2>First Name</h2>
+      </div>
+
+      <div class="item">
+        <p ng-bind="user.firstname"></p>
+      </div>
+      
+      <div class="item item-divider">
+        <h2>Last Name</h2>
+      </div>
+
+      <div class="item">
+        <p ng-bind="user.lastname"></p>
+      </div>
+
+      <div class="item item-divider">
+        <h2>E-mail</h2>
+      </div>
+
+      <div class="item">
+        <p ng-bind="user.email"></p>
+      </div>
+
+      <div class="item item-divider">
+        <h2>Contact</h2>
+      </div>
+
+      <div class="item">
+          <p ng-bind="user.phone"></p>
+      </div>
+      
+      <div class="item item-divider">
+        <h2>Username</h2>
+      </div>
+
+      <div class="item">
+          <p ng-bind="user._id"></p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

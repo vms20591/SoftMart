@@ -2,11 +2,7 @@
   <ion-nav-title>
       <i class='ion-person-stalker'></i> <span style='font-weight:bold;'>My Account</span>
   </ion-nav-title>
-  <ion-content class="padding">
-    <ion-refresher
-      pulling-text="Pull to update"
-      on-refresh="doRefresh()">
-    </ion-refresher>
+  <ion-content class="padding" scroll="true">
     <div class="list">
       <a class="item item-divider">
         Advertisements
@@ -14,28 +10,24 @@
       <a class="item item-icon-left" ui-sref="tabs.my-posted-ads">
         <i class="icon ion-forward"></i>
         Ads Posted
-        <span class="badge badge-positive">{{adsPostedByUserLength}}</span>
+        <span class="badge badge-positive">{{adsPostedByUser.length}}</span>
       </a>
       <a class="item item-icon-left">
         <i class="icon ion-reply"></i>
         Ads Responded
-        <span class="badge badge-positive">0</span>
+        <span class="badge badge-positive">{{adsResponded.length}}</span>
       </a>
-      <a ui-sref="tabs.my-cart" class="item item-icon-left">
+      <a class="item item-icon-left" ui-sref="tabs.my-cart">
         <i class="icon ion-star"></i>
         Ads Shortlisted
-        <span class="badge badge-positive">{{itemsInCart}}</span>
+        <span class="badge badge-positive">{{adsInCart.length}}</span>
       </a>
       <a class="item item-divider">
         General
       </a>
-      <a class="item item-icon-left">
+      <a class="item item-icon-left" ui-sref="tabs.my-profile">
         <i class="icon ion-person-stalker"></i>
         Profile
-      </a>
-      <a class="item item-icon-left">
-        <i class="icon ion-clipboard"></i>
-        Terms &amp; Conditions
       </a>
     </div>
   </ion-content>

@@ -1,0 +1,77 @@
+<ion-view>
+  <ion-nav-title>
+    <i class='ion-cube'></i> <span style='font-weight:bold;'>Ad Details</span>
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon ion-compose" ng-click="openEditModal()">
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="padding" scroll="true">
+    <div class="item card">
+      <div class="item item-divider">
+        <h2>{{ad.name}}</h2>
+      </div>
+
+      <div class="item item-body">
+          <img class="full-image" ng-src="{{selectedImg}}">
+
+        <ul class="img-thumbnail-ul">
+          <li ng-repeat="src in imgSrcs track by $index">
+            <div class="img-thumb-div">
+              <img ng-click="updateSelectedImg($index)" ng-src="{{src}}">
+            </div>      
+          </li>
+        </ul> 
+      </div>
+
+      <div class="item item-divider">
+        <h2>Description</h2>
+      </div>
+
+      <div class="item">
+        <p>{{ad.description}}</p>
+      </div>
+      
+      <div class="item item-divider">
+        <h2>Price</h2>
+      </div>
+
+      <div class="item">
+        <p>{{ad.price | currency:"£":2}}</p>
+      </div>
+
+      <div class="item item-divider" ng-if="ad.manufacturedYear">
+        <h2>Manufactured Year</h2>
+      </div>
+
+      <div class="item" ng-if="ad.manufacturedYear">
+        <p>{{ad.manufacturedYear | sinceTimePassed:"YYYY"}}</p>
+      </div>
+
+      <div class="item item-divider">
+        <h2>Posted On</h2>
+      </div>
+
+      <div class="item">
+          <p>{{ad.postedOn | date:"MM/dd/yyyy" | sinceTimePassed:"MM/DD/YYYY"}}</p>
+      </div>
+
+      <div class="item item-divider">
+        <h2>Category & Sub-Category</h2>
+      </div>
+
+      <div class="item">
+          <p>{{ad.selectedCategory}} &amp; {{ad.selectedSubCategory}}</p>
+      </div>
+
+      <div class="item item-divider">
+        <h2>Contact Information</h2>
+      </div>
+
+      <div class="item">
+        <p><strong>Email: </strong>{{ad.contact.email}}</p>
+        <p><strong>Contact Number: </strong>{{ad.contact.phone}}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
