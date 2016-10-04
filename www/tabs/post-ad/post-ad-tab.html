@@ -16,7 +16,7 @@
     </label>
 
     <label class="item item-input">
-      <span class="input-label">Price</span>
+      <span class="input-label">Price (in £)</span>
       <input ng-model="product.price" type="number" placeholder="">
     </label>
 
@@ -71,14 +71,14 @@
       <h2>Upload Photos</h2>
     </div>
 
-    <div class="item item-icon-right" ng-if="inMobileMode">
+    <div class="item item-icon-right" ng-click="chooseFromCamera()" ng-if="inMobileMode">
       From Camera
-      <i ng-click="chooseFromCamera()" class="icon ion-ios-camera"></i>
+      <i class="icon ion-ios-camera"></i>
     </div>
 
-    <div class="item item-icon-right" ng-if="inMobileMode">
+    <div class="item item-icon-right" ng-click="chooseFromGallery()" ng-if="inMobileMode">
       From Gallery  
-      <i ng-click="chooseFromGallery()" class="icon ion-images"></i>
+      <i class="icon ion-images"></i>
     </div>
 
     <div class="item item-image" ng-if="inMobileMode && imgSrcs">

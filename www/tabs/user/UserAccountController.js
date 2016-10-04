@@ -15,23 +15,25 @@
         $scope.adsPostedByUser=ads;  
       });
       
-      CallbackService.registerForAddItem('ads.add',function(){
-        $scope.refreshAdsAndCart();
+      CallbackService.registerForAddItem('ads.add',function(eventName){
+        $scope.refreshAdsAndCart(eventName);
       });
       
-      CallbackService.registerForEditItem('ads.edit',function(){
-        $scope.refreshAdsAndCart();
+      CallbackService.registerForEditItem('ads.edit',function(eventName){
+        $scope.refreshAdsAndCart(eventName);
       });
       
-      CallbackService.registerForDeleteItem('ads.delete',function(){
-        $scope.refreshAdsAndCart();
+      CallbackService.registerForDeleteItem('ads.delete',function(eventName){
+        $scope.refreshAdsAndCart(eventName);
       });
     });
     
-    $scope.refreshAdsAndCart=function(){
-      UserAccountService.updateCart().then(function(resp){
-        $scope.adsInCart=resp;
-      });
+    $scope.refreshAdsAndCart=function(eventName){
+      if(eventName && eventName!=='ads.add'){
+        UserAccountService.updateCart().then(function(resp){
+          $scope.adsInCart=resp;
+        });
+      }
       
       UserAccountService.getAdsPostedByUser().then(function(ads){
         $scope.adsPostedByUser=ads;  

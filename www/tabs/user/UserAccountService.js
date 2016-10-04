@@ -148,13 +148,38 @@
       };
       
       return PostAdService.getPostedAds(options).then(function(ads){
-        ads.filter(function(ad){
-          adsInCart.map(function(temp){
-            if(temp._id===ad._id && temp._rev!==ad._rev && ad._rev>temp._rev){
-              angular.copy(ad,temp)
+        
+        //So here I am doing a little calculation where I iterate through the ads that already in cart
+        //Then compare if any of them match with the list of Ads retrieved above
+        //If they do add them to the result else dont
+        var res=adsInCart.filter(function(destAd,index){
+          var flag=false;
+          ads.map(function(srcAd){
+            if(srcAd._id===destAd._id){
+              angular.copy(srcAd,destAd)
+              flag=true;
             }
           });
+          return flag
         });
+        
+        //Finally deep copy the contents of the new result into the ads cart without changing the reference
+        angular.copy(res,adsInCart);
+        
+        //Finally deep copy the ad id's into the logged in user's cart
+        angular.copy(adsInCart.map(function(ad){
+          return ad._id;
+        }),loggedInUser['cart']);
+        
+        //Update the user
+        return _db.put(loggedInUser);
+        
+      }).then(function(resp){
+        //Don't forget to update the rev ID which is very important
+        if(resp && resp.ok){
+          loggedInUser._id=resp.id;
+          loggedInUser._rev=resp.rev;
+        }
         
         return adsInCart;
       }).catch(function(err){

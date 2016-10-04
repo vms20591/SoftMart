@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.searchResultServices',[]);
 
-  app.factory('SearchResultService',['$http','$q','PouchDbService','PostAdService','UserAccountService',function($http,$q,PouchDbService,PostAdService,UserAccountService){
+  app.factory('SearchResultService',['$timeout','$q','PouchDbService','PostAdService','UserAccountService',function($timeout,$q,PouchDbService,PostAdService,UserAccountService){
     var searchResults={}
 
     var adResults=null;
@@ -47,12 +47,15 @@
     var reactToChange=function(change){
       console.log("Change: ",change);
         
-      if(change.deleted){
-        reactToDelete(change.id);
-      }
-      else{
-        reactToInsertOrUpdate(change);
-      }
+      //Intentionally adding a timeout to delay the reaction on adding new ad
+      $timeout(function(){  
+        if(change.deleted){
+          reactToDelete(change.id);
+        }
+        else{
+          reactToInsertOrUpdate(change);
+        }
+      },1000);
     }
 
     var binarySearch=function(arr, docId) {
@@ -81,7 +84,7 @@
 
       var ad=adResults[index];
       
-      formatAttachments(newAd.doc._attachments);
+      transformAttachments(newAd.doc._attachments);
 
       if(ad && ad._id===newAd.id){
         adResults[index]=newAd.doc;

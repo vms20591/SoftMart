@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.postAdServices',[]);
 
-  app.factory('PostAdService',['$q','SearchCategoryService','PouchDbService','CallbackService',function($q,SearchCategoryService,PouchDbService,CallbackService){
+  app.factory('PostAdService',['$q','$timeout','SearchCategoryService','PouchDbService','CallbackService',function($q,$timeout,SearchCategoryService,PouchDbService,CallbackService){
     var postAds={};
     var manufacturedYearOptions=[];
     var start=1970;
@@ -49,7 +49,10 @@
     
     postAds.postAd=function(product){
       return $q.when(_db.post(product)).then(function(resp){
-        CallbackService.notifyOnAddItem('ads.add');
+        //Intentionally adding a timeout here to give the db a chance to persist the changes properly
+        $timeout(function(){
+          CallbackService.notifyOnAddItem('ads.add')
+        },2000);
                 
         return resp;
       });

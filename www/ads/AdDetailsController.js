@@ -1,7 +1,7 @@
 (function(){
   var app=angular.module('softMart.adDetailsControllers',[]);
 
-  app.controller('AdDetailsController',['$scope','$stateParams','$ionicPlatform','$ionicHistory','AdDetailService','PostAdService',function($scope,$stateParams,$ionicPlatform,$ionicHistory,AdDetailService,PostAdService){
+  app.controller('AdDetailsController',['$scope','$stateParams','$ionicPlatform','$ionicHistory','$ionicPopup','AdDetailService','PostAdService',function($scope,$stateParams,$ionicPlatform,$ionicHistory,$ionicPopup,AdDetailService,PostAdService){
     //This "vm" represents list of images
     $scope.imgSrcs=[];
 
@@ -22,6 +22,17 @@
      */
     $scope.updateCategoryOptions=function(selectedCategory){
       $scope.subCategorySelectOptions=selectedCategory.items;
+    };
+    
+    $scope.showAlert = function(opts) {
+      if(!opts){
+        opts={
+          title: 'Default',
+          template: 'Default'
+        };  
+      }
+      
+      var alertPopup = $ionicPopup.alert(opts);
     };
 
     $ionicPlatform.ready(function(){

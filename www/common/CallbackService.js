@@ -30,7 +30,7 @@
       callbacks.addItemCallbacks[eventName]=callbacks.addItemCallbacks[eventName] || [];
     
       callbacks.addItemCallbacks[eventName].forEach(function(callback){
-        callback();
+        callback(eventName);
       });
     };
     
@@ -38,7 +38,7 @@
       callbacks.editItemCallbacks[eventName]=callbacks.editItemCallbacks[eventName] || [];
     
       callbacks.editItemCallbacks[eventName].forEach(function(callback){
-        callback();
+        callback(eventName);
       });
     };
     
@@ -46,7 +46,7 @@
       callbacks.deleteItemCallbacks[eventName]=callbacks.deleteItemCallbacks[eventName] || [];
     
       callbacks.deleteItemCallbacks[eventName].forEach(function(callback){
-        callback();
+        callback(eventName);
       });
     };
     
