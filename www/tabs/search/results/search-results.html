@@ -3,42 +3,32 @@
     <i class='ion-search'></i> <span style='font-weight:bold;'>Search Home</span>
   </ion-nav-title>
   <ion-content class="padding" scroll="true">
-    <div class="row responsive-sm" style="text-align:center">
-      <h2>Ad Results</h2>
+    <div class="list">
+      <h2 class="bold-and-center">Ad Results</h2>
     </div>
-    <div class="row responsive-sm product-gallery">
-      <div class="col">
-       <!-- <div class="list list-input-special">
-          <input type="search" class="input-special" ng-model="searchText" placeholder="Search">
-          <span class="input-search icon ion-ios-search" ng-click="search()"></span>
-       </div>-->
-        <div class="list">
-          <label class="item item-input">
-            <i class="icon ion-search placeholder-icon"></i>  
-            <input type="search" ng-model="searchText" placeholder="Search">
-          </label>
-        </div>
-      </div>
+    <div class="list">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>  
+        <input type="search" ng-model="searchText" placeholder="Search">
+      </label>
     </div>
-    <div class="row responsive-sm product-gallery">
-      <p>
-        <center><strong>Found {{adResults.length}} matching Ad</strong></center>
+    <div class="list">
+      <p class="bold-and-center">
+        Found {{adResults.length}} matching Ad
       </p>
     </div>
     <hr/>
-    <div ng-if="adResults.length>0" class="row responsive-sm product-gallery">
-      <div class="list">
-        <label class="item item-input item-select">
-          <div class="input-label">
-           Show By
-          </div>
-          <select ng-model="showAdsBy" ng-change="showAdsOnUpdate(showAdsBy)" ng-options="option.name for option in showAdsByOptions track by option.id">
-          </select>
-        </label>
-      </div>
+    <div ng-if="adResults.length>0" class="list">
+      <label class="item item-input item-select">
+        <div class="input-label">
+         Show By
+        </div>
+        <select ng-model="showAdsBy" ng-change="showAdsOnUpdate(showAdsBy)" ng-options="option.name for option in showAdsByOptions track by option.id">
+        </select>
+      </label>
     </div>
     <div class="row responsive-sm product-gallery">
-        <div class="col col-20" ng-repeat="ad in adResults | orderBy:propertyName:reverse | filter:searchText">
+      <div class="col col-20" ng-repeat="ad in adResults | orderBy:propertyName:reverse | filter:searchText">
         <div class="list card">
           <div class="item item-body">
             <div class="item-image">

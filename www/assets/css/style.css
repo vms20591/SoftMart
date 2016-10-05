@@ -9,15 +9,26 @@
   padding-bottom: 0;
   transition: 0.09s all linear;
   cursor:pointer;
+  background-color:#FFF;
 }
 
-.list .item.item-accordion.ng-hide {
-  line-height: 0px;
+.item.item-stable {
+  background-color:#FFF;
+  border-color:#DDD;
 }
 
 .list .item.item-accordion.ng-hide-add,
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
+}
+
+.list .bold-and-center{
+  text-align:center;
+  font-weight:bold;
+}
+
+a.item-content{
+  padding-left:42px !important;
 }
 
 .spinner svg {
